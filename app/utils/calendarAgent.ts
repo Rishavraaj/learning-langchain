@@ -20,7 +20,7 @@ const systemTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export async function createCalendarAgent() {
   const model = new ChatOpenAI({
-    modelName: "gpt-4",
+    modelName: "gpt-3.5-turbo",
     temperature: 0,
   });
 
@@ -40,11 +40,15 @@ export async function createCalendarAgent() {
       {
         "summary": "Meeting title",
         "description": "Meeting description",
-        "startTime": "2025-01-08T14:00:00", // Local time
-        "endTime": "2025-01-08T15:00:00",   // Local time
+        "startTime": "YYYY-MM-DDTHH:mm:ss", // Local time, use actual date, not placeholder
+        "endTime": "YYYY-MM-DDTHH:mm:ss",   // Local time, use actual date, not placeholder
         "attendees": ["email1@example.com"]   // Optional
       }
-      Always use the current year for dates. Parse the natural language input to extract these details.`,
+      For dates:
+      - Use dayjs().add(1, 'day') for tomorrow
+      - Use dayjs() for today
+      - Always include the actual year, month, and day in the date
+      - Do not use placeholder dates`,
       func: async (input: string) => {
         try {
           console.log("Raw input to create_calendar_event:", input);
@@ -66,16 +70,13 @@ export async function createCalendarAgent() {
             );
           }
 
-          // Convert times to current year and proper timezone
-          const now = dayjs();
-          const startDate = dayjs(startTime)
-            .year(now.year())
-            .tz(systemTimezone);
-          const endDate = dayjs(endTime).year(now.year()).tz(systemTimezone);
+          // Parse dates with the correct timezone
+          const startDate = dayjs(startTime).tz(systemTimezone);
+          const endDate = dayjs(endTime).tz(systemTimezone);
 
           console.log("Creating event with dates:", {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
+            startDate: startDate.format(),
+            endDate: endDate.format(),
             timezone: systemTimezone,
           });
 
@@ -104,25 +105,22 @@ export async function createCalendarAgent() {
         "eventId": "event123",
         "summary": "Updated title",      // Optional
         "description": "New desc",       // Optional
-        "startTime": "2025-01-08T14:00:00", // Optional, local time
-        "endTime": "2025-01-08T15:00:00",   // Optional, local time
+        "startTime": "YYYY-MM-DDTHH:mm:ss", // Optional, use actual date
+        "endTime": "YYYY-MM-DDTHH:mm:ss",   // Optional, use actual date
         "attendees": ["email@example.com"]    // Optional
       }
-      Always use the current year for dates.`,
+      Always use actual dates, not placeholders.`,
       func: async (input: string) => {
         try {
           const { eventId, ...updates } = JSON.parse(input);
-          const now = dayjs();
 
           if (updates.startTime) {
             updates.startTime = dayjs(updates.startTime)
-              .year(now.year())
               .tz(systemTimezone)
               .toDate();
           }
           if (updates.endTime) {
             updates.endTime = dayjs(updates.endTime)
-              .year(now.year())
               .tz(systemTimezone)
               .toDate();
           }
@@ -163,12 +161,15 @@ export async function createCalendarAgent() {
     verbose: true,
     agentArgs: {
       prefix: `You are a helpful assistant that manages Google Calendar events. When creating or updating events:
-      1. Always use the current year for dates
-      2. Convert user's natural language time to local time format (YYYY-MM-DDTHH:mm:ss)
-      3. Format the input as proper JSON before calling tools
-      4. Include all necessary fields as specified in the tool descriptions
-      5. Handle time zones appropriately using the user's local timezone
-      6. For time durations, calculate the end time based on the start time and duration`,
+      1. For tomorrow's events, use dayjs().add(1, 'day') to get the correct date
+      2. For today's events, use dayjs() to get the current date
+      3. Always use the actual date and year, not placeholders
+      4. Convert user's natural language time to proper format (YYYY-MM-DDTHH:mm:ss)
+      5. Format the input as proper JSON before calling tools
+      6. Include all necessary fields as specified in the tool descriptions
+      7. Handle time zones appropriately using the user's local timezone
+      8. For time durations, calculate the end time based on the start time and duration
+      9. Double-check that dates are correct before creating events`,
     },
   });
 
