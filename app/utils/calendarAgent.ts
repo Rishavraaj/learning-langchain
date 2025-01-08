@@ -51,14 +51,11 @@ export async function createCalendarAgent() {
       - Do not use placeholder dates`,
       func: async (input: string) => {
         try {
-          console.log("Raw input to create_calendar_event:", input);
-
           if (!input) {
             throw new Error("No input provided to create_calendar_event");
           }
 
           const parsed = JSON.parse(input);
-          console.log("Parsed input:", parsed);
 
           const { summary, description, startTime, endTime, attendees } =
             parsed;
@@ -74,12 +71,6 @@ export async function createCalendarAgent() {
           const startDate = dayjs(startTime).tz(systemTimezone);
           const endDate = dayjs(endTime).tz(systemTimezone);
 
-          console.log("Creating event with dates:", {
-            startDate: startDate.format(),
-            endDate: endDate.format(),
-            timezone: systemTimezone,
-          });
-
           const event = await createEvent(
             summary,
             description || "",
@@ -88,7 +79,6 @@ export async function createCalendarAgent() {
             attendees
           );
 
-          console.log("Event created successfully:", event);
           return JSON.stringify(event, null, 2);
         } catch (error) {
           console.error("Error in create_calendar_event:", error);

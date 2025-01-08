@@ -24,14 +24,6 @@ export const oauth2Client = new OAuth2Client(
   REDIRECT_URI
 );
 
-// Set up refresh token handler
-oauth2Client.on("tokens", (tokens) => {
-  if (tokens.refresh_token) {
-    console.log("New refresh token received:", tokens.refresh_token);
-  }
-  console.log("Access token refreshed:", tokens.access_token);
-});
-
 export const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
 export async function listEvents(timeMin: Date = new Date()) {
@@ -156,7 +148,6 @@ export async function updateEvent(
 }
 
 export async function deleteEvent(eventId: string) {
-  console.log("Deleting event:", eventId);
   try {
     await calendar.events.delete({
       calendarId: "primary",

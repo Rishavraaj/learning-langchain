@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { createEvent } from "../utils/googleCalendar";
+import { createEvent } from "@/app/utils/googleCalendar";
 
 const CreateEvent = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
