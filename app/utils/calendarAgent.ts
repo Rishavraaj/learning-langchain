@@ -1,6 +1,10 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { DynamicTool } from "@langchain/core/tools";
+import { AgentExecutor, createOpenAIFunctionsAgent } from "langchain/agents";
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -146,11 +150,11 @@ export async function createCalendarAgent() {
     }),
   ];
 
-  const executor = await initializeAgentExecutorWithOptions(tools, model, {
-    agentType: "openai-functions",
-    verbose: true,
-    agentArgs: {
-      prefix: `You are a helpful assistant that manages Google Calendar events. When creating or updating events:
+  // Create a prompt template
+  const prompt = ChatPromptTemplate.fromMessages([
+    [
+      "system",
+      `You are a helpful assistant that manages Google Calendar events. When creating or updating events:
       1. For tomorrow's events, use dayjs().add(1, 'day') to get the correct date
       2. For today's events, use dayjs() to get the current date
       3. Always use the actual date and year, not placeholders
@@ -160,7 +164,23 @@ export async function createCalendarAgent() {
       7. Handle time zones appropriately using the user's local timezone
       8. For time durations, calculate the end time based on the start time and duration
       9. Double-check that dates are correct before creating events`,
-    },
+    ],
+    ["human", "{input}"],
+    new MessagesPlaceholder("agent_scratchpad"),
+  ]);
+
+  // Create the agent
+  const agent = await createOpenAIFunctionsAgent({
+    llm: model,
+    tools,
+    prompt,
+  });
+
+  // Create the executor
+  const executor = new AgentExecutor({
+    agent,
+    tools,
+    verbose: true,
   });
 
   return executor;
