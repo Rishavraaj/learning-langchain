@@ -16,7 +16,9 @@ const systemTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 const REDIRECT_URI =
-  process.env.REDIRECT_URI || "http://localhost:3000/api/auth/callback";
+  process.env.NODE_ENV === "production"
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`
+    : "http://localhost:3000/api/auth/callback";
 
 export const oauth2Client = new OAuth2Client(
   GOOGLE_CLIENT_ID,
