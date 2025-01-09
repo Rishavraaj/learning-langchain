@@ -2,6 +2,7 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Image from "next/image";
 
 interface MarkdownContentProps {
   content: string;
@@ -43,7 +44,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
         ),
         a: (props) => (
           <a
-            className="text-primary hover:underline cursor-pointer"
+            className="text-primary hover:underline cursor-pointer text-blue-600"
             target="_blank"
             rel="noopener noreferrer"
             {...props}
@@ -62,13 +63,21 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
         ),
         td: (props) => <td className="px-4 py-2 border-t" {...props} />,
         hr: (props) => <hr className="my-4 border-border" {...props} />,
-        img: (props) => (
-          <img
-            className="max-w-full h-auto rounded-lg my-4"
-            alt={props.alt || ""}
-            {...props}
-          />
-        ),
+        img: ({ src, alt, width, height, ...props }) => {
+          const w = width ? parseInt(width.toString()) : 800;
+          const h = height ? parseInt(height.toString()) : 400;
+          return (
+            <Image
+              className="max-w-full h-auto rounded-lg my-4"
+              alt={alt || ""}
+              src={src || ""}
+              width={w}
+              height={h}
+              style={{ width: "100%", height: "auto" }}
+              {...props}
+            />
+          );
+        },
       }}
     >
       {content}
