@@ -30,6 +30,14 @@ export async function createCalendarAgent() {
 
   const tools = [
     new DynamicTool({
+      name: "get_current_date",
+      description: "Returns the current date in the user's timezone",
+      func: async () => {
+        return dayjs().tz(systemTimezone).format("YYYY-MM-DD");
+      },
+    }),
+
+    new DynamicTool({
       name: "list_calendar_events",
       description:
         "Lists upcoming calendar events. Returns events with their details including title, time, and attendees.",
@@ -52,7 +60,8 @@ export async function createCalendarAgent() {
       - Use dayjs().add(1, 'day') for tomorrow
       - Use dayjs() for today
       - Always include the actual year, month, and day in the date
-      - Do not use placeholder dates`,
+      - Do not use placeholder dates
+      - Before scheduling any meeting for today, first call get_current_date to get the current date`,
       func: async (input: string) => {
         try {
           if (!input) {
@@ -156,7 +165,7 @@ export async function createCalendarAgent() {
       "system",
       `You are a helpful assistant that manages Google Calendar events. When creating or updating events:
       1. For tomorrow's events, use dayjs().add(1, 'day') to get the correct date
-      2. For today's events, use dayjs() to get the current date
+      2. For today's events, first call get_current_date to get today's date
       3. Always use the actual date and year, not placeholders
       4. Convert user's natural language time to proper format (YYYY-MM-DDTHH:mm:ss)
       5. Format the input as proper JSON before calling tools
