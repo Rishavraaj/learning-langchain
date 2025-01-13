@@ -56,7 +56,8 @@ export async function createEvent(
   description: string,
   startTime: Date,
   endTime: Date,
-  attendees?: string[]
+  attendees?: string[],
+  addMeetLink: boolean = false
 ) {
   const start = dayjs(startTime).tz(systemTimezone);
   const end = dayjs(endTime).tz(systemTimezone);
@@ -79,12 +80,21 @@ export async function createEvent(
         timeZone: systemTimezone,
       },
       attendees: attendees?.map((email) => ({ email })),
+      conferenceData: addMeetLink
+        ? {
+            createRequest: {
+              requestId: Math.random().toString(36).substring(7),
+              conferenceSolutionKey: { type: "hangoutsMeet" },
+            },
+          }
+        : undefined,
     };
 
     const response = await calendar.events.insert({
       calendarId: "primary",
       requestBody: event,
       sendUpdates: "all", // Send email notifications to attendees
+      conferenceDataVersion: addMeetLink ? 1 : 0,
     });
 
     return response.data;

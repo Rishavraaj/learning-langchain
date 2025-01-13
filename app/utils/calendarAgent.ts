@@ -84,6 +84,7 @@ export async function createCalendarAgent() {
         "startTime": "YYYY-MM-DDTHH:mm:ss", // Local time, use actual date, not placeholder
         "endTime": "YYYY-MM-DDTHH:mm:ss",   // Local time, use actual date, not placeholder
         "attendees": ["email1@example.com"]   // Optional
+        "addMeetLink": true/false            // Optional, whether to add a Google Meet link
       }
       For dates:
       - Use dayjs().add(1, 'day') for tomorrow
@@ -99,8 +100,14 @@ export async function createCalendarAgent() {
 
           const parsed = JSON.parse(input);
 
-          const { summary, description, startTime, endTime, attendees } =
-            parsed;
+          const {
+            summary,
+            description,
+            startTime,
+            endTime,
+            attendees,
+            addMeetLink,
+          } = parsed;
 
           // Validate required fields
           if (!summary || !startTime || !endTime) {
@@ -118,7 +125,8 @@ export async function createCalendarAgent() {
             description || "",
             startDate.toDate(),
             endDate.toDate(),
-            attendees
+            attendees,
+            addMeetLink
           );
 
           return JSON.stringify(event, null, 2);
@@ -140,6 +148,7 @@ export async function createCalendarAgent() {
         "startTime": "YYYY-MM-DDTHH:mm:ss", // Optional, use actual date
         "endTime": "YYYY-MM-DDTHH:mm:ss",   // Optional, use actual date
         "attendees": ["email@example.com"]    // Optional
+        "addMeetLink": true/false            // Optional, whether to add a Google Meet link
       }
       Always use actual dates, not placeholders.`,
       func: async (input: string) => {
