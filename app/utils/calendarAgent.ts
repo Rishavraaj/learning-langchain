@@ -38,6 +38,35 @@ export async function createCalendarAgent() {
     }),
 
     new DynamicTool({
+      name: "get_events_by_date",
+      description: `Gets calendar events for a specific date. Format the input as a JSON string:
+      {
+        "date": "YYYY-MM-DD"    // The date to get events for
+      }
+      Returns events for the entire 24-hour period of the specified date in the user's timezone.`,
+      func: async (input: string) => {
+        try {
+          const { date } = JSON.parse(input);
+
+          // Create start and end of the day in user's timezone
+          const startOfDay = dayjs(date).tz(systemTimezone).startOf("day");
+          const endOfDay = dayjs(date).tz(systemTimezone).endOf("day");
+
+          const events = await listEvents(
+            startOfDay.toDate(),
+            endOfDay.toDate()
+          );
+          return JSON.stringify(events, null, 2);
+        } catch (error) {
+          console.error("Error in get_events_by_date:", error);
+          const errorMessage =
+            error instanceof Error ? error.message : "Unknown error occurred";
+          throw new Error(`Failed to get events: ${errorMessage}`);
+        }
+      },
+    }),
+
+    new DynamicTool({
       name: "list_calendar_events",
       description:
         "Lists upcoming calendar events. Returns events with their details including title, time, and attendees.",

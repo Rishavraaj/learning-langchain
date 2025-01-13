@@ -28,13 +28,15 @@ export const oauth2Client = new OAuth2Client(
 
 export const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
-export async function listEvents(timeMin: Date = new Date()) {
+export async function listEvents(timeMin: Date = new Date(), timeMax?: Date) {
   const startTime = dayjs(timeMin).tz(systemTimezone);
+  const endTime = timeMax ? dayjs(timeMax).tz(systemTimezone) : undefined;
 
   try {
     const response = await calendar.events.list({
       calendarId: "primary",
       timeMin: startTime.toISOString(),
+      timeMax: endTime?.toISOString(),
       maxResults: 10,
       singleEvents: true,
       orderBy: "startTime",
