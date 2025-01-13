@@ -65,6 +65,7 @@ export function CalendarPrompt() {
           title: "Success",
           description: "Calendar request processed successfully",
         });
+        form.reset();
       }
     } catch {
       toast({
@@ -72,6 +73,7 @@ export function CalendarPrompt() {
         title: "Error",
         description: "Something went wrong",
       });
+      form.reset();
       setResult("Error: Something went wrong");
     }
   }
