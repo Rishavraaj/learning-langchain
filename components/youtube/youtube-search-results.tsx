@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { VideoResult } from "@/types/youtube";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 interface YouTubeSearchResultsProps {
   results: VideoResult[];
@@ -18,7 +19,7 @@ export function YouTubeSearchResults({ results }: YouTubeSearchResultsProps) {
         <Card key={video.id.videoId} className="overflow-hidden">
           <CardContent className="p-0">
             <div className="aspect-video">
-              <img
+              <Image
                 src={video.snippet.thumbnails.high.url}
                 alt={video.snippet.title}
                 className="w-full h-full object-cover"

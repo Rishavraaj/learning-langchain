@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   createYouTubeAgent,
   searchYouTubeVideos,
-  getVideoDetails,
 } from "@/app/utils/youtubeAgent";
 
 export async function POST(req: NextRequest) {
@@ -25,8 +24,6 @@ export async function POST(req: NextRequest) {
             { status: 400 }
           );
         }
-        const videoDetails = await getVideoDetails(query);
-        return NextResponse.json({ video: videoDetails });
 
       case "agent":
         const result = await createYouTubeAgent(query);

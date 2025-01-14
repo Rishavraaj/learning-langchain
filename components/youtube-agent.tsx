@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 
 interface VideoResult {
   id: { videoId: string };
@@ -132,7 +133,7 @@ export default function YouTubeAgent() {
             <Card key={video.id.videoId}>
               <CardContent className="pt-6">
                 <div className="aspect-video mb-4">
-                  <img
+                  <Image
                     src={video.snippet.thumbnails.default.url}
                     alt={video.snippet.title}
                     className="w-full h-full object-cover rounded"
