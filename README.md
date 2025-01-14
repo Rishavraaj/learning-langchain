@@ -1,89 +1,101 @@
-# Learning LangChain
+# AI-Powered Content Analysis Platform
 
-A modern Next.js application showcasing LangChain integration with OpenAI and Google Calendar API integration. Built with Next.js 15, TypeScript, and Tailwind CSS.
+This platform provides intelligent content analysis for YouTube videos using LangChain and GPT models.
 
 ## Features
 
-- 🤖 LangChain integration with OpenAI
-- 📅 Google Calendar API integration
-- 🎨 Modern UI with Tailwind CSS and Radix UI components
-- 🌙 Dark mode support
-- 📱 Fully responsive design
-- ⚡ Built with Next.js 15 and TypeScript
-
-## Prerequisites
-
-- Node.js 18+ or Bun runtime
-- OpenAI API key
-- Google OAuth credentials
+### YouTube Content Analysis
+- **Video Search**: Search for YouTube videos directly within the platform
+- **Transcript Analysis**: Get detailed analysis of video transcripts including:
+  - Concise summaries
+  - Key points extraction
+  - Main topics identification
+- **Sentiment Analysis**: Analyze video comments to understand:
+  - Overall sentiment (positive/negative/neutral)
+  - Key themes in comments
+  - Most discussed aspects
+- **Trend Analysis**: Get insights from video metrics:
+  - Engagement analysis
+  - Performance indicators
+  - Areas for improvement
 
 ## Setup
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd learning-langchain
+git clone [repository-url]
+cd [repository-name]
 ```
 
 2. Install dependencies:
 ```bash
 npm install
-# or
-bun install
 ```
 
-3. Configure environment variables:
-   - Copy `.env.example` to `.env.local`
-   - Add your OpenAI API key
-   - Configure Google OAuth credentials
-```bash
-cp .env.example .env.local
+3. Set up environment variables in `.env.local`:
+```env
+OPENAI_API_KEY=your_openai_api_key
+GOOGLE_CLIENT_EMAIL=your_google_client_email
+GOOGLE_PRIVATE_KEY=your_google_private_key
+GOOGLE_PROJECT_ID=your_project_id
 ```
 
-Required environment variables:
-- `OPENAI_API_KEY`: Your OpenAI API key
-- `GOOGLE_CLIENT_ID`: Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
-- `REDIRECT_URI`: OAuth redirect URI (default: http://localhost:3000/api/auth/callback)
-
-## Development
-
-Run the development server:
-
+4. Run the development server:
 ```bash
 npm run dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-## Tech Stack
+1. Navigate to `/youtube` in your browser
+2. Search for a YouTube video using the search bar
+3. Click "Analyze Video" on any search result
+4. View the comprehensive analysis including:
+   - Video transcript
+   - Comment analysis
+   - Engagement metrics
+   - AI-powered insights
 
-- **Framework**: Next.js 15
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: 
-  - Radix UI primitives
-  - Custom shadcn/ui components
-- **AI Integration**: LangChain with OpenAI
-- **Form Handling**: React Hook Form with Zod validation
-- **Date Handling**: date-fns
-- **Charts**: Recharts
-- **Markdown**: React Markdown with GFM support
+## Technical Details
 
-## Project Structure
+- Built with Next.js 13+ and TypeScript
+- Uses LangChain for AI processing
+- Integrates with YouTube Data API
+- GPT-3.5-turbo for content analysis
+- Handles large content through intelligent chunking
 
-- `app/` - Next.js app router pages and layouts
-- `components/` - Reusable UI components
-- `hooks/` - Custom React hooks
-- `lib/` - Utility functions and configurations
-- `public/` - Static assets
+## API Endpoints
+
+### `/api/youtube/search`
+- Search for YouTube videos
+- Query params: `query` (search term)
+
+### `/api/youtube/video-data`
+- Get detailed video information
+- Query params: `videoId`
+
+### `/api/content-analysis`
+- Analyze video content
+- POST request with:
+  ```typescript
+  {
+    type: "transcript" | "sentiment" | "trends",
+    data: {
+      transcript?: string,
+      comments?: string[],
+      metrics?: {
+        views: number,
+        likes: number,
+        commentCount: number
+      }
+    }
+  }
+  ```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is open source and available under the MIT license.
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
