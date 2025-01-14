@@ -23,6 +23,8 @@ export function YouTubeSearchResults({ results }: YouTubeSearchResultsProps) {
                 src={video.snippet.thumbnails.high.url}
                 alt={video.snippet.title}
                 className="w-full h-full object-cover"
+                width={320}
+                height={180}
               />
             </div>
             <div className="p-4">

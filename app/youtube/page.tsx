@@ -1,13 +1,10 @@
-import YouTubeAgent from "@/components/youtube/youtube-agent";
-import { YouTubeHeader } from "@/components/youtube/youtube-header";
+import { YouTubeSearchAnalysis } from "@/components/youtube/youtube-search-analysis";
 
 export default function YouTubePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <YouTubeHeader />
-      <main className="container mx-auto py-6 px-4">
-        <YouTubeAgent />
-      </main>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">YouTube Video Analysis</h1>
+      <YouTubeSearchAnalysis />
     </div>
   );
 }

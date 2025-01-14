@@ -137,6 +137,8 @@ export default function YouTubeAgent() {
                     src={video.snippet.thumbnails.default.url}
                     alt={video.snippet.title}
                     className="w-full h-full object-cover rounded"
+                    width={320}
+                    height={180}
                   />
                 </div>
                 <h3 className="font-semibold mb-2">{video.snippet.title}</h3>
