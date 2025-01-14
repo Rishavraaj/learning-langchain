@@ -10,13 +10,13 @@ import {
   CardTitle,
   CardDescription,
 } from "./ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Loader2 } from "lucide-react";
 import { MarkdownContent } from "./markdown-content";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   prompt: z.string().min(3, {
@@ -26,7 +26,6 @@ const formSchema = z.object({
 
 export function CalendarPrompt() {
   const [result, setResult] = useState("");
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,24 +54,13 @@ export function CalendarPrompt() {
       setResult(data.result || data.error);
 
       if (data.error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: data.error,
-        });
+        toast.error(data.error);
       } else if (data.result) {
-        toast({
-          title: "Success",
-          description: "Calendar request processed successfully",
-        });
+        toast.success("Calendar request processed successfully");
         form.reset();
       }
     } catch {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong",
-      });
+      toast.error("Something went wrong");
       form.reset();
       setResult("Error: Something went wrong");
     }
