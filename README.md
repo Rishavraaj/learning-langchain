@@ -1,101 +1,127 @@
-# AI-Powered Content Analysis Platform
+# AI Agents Hub (Private)
 
-This platform provides intelligent content analysis for YouTube videos using LangChain and GPT models.
+A powerful suite of AI-powered agents designed to automate and enhance various digital tasks. This project is private and proprietary.
 
 ## Features
 
-### YouTube Content Analysis
-- **Video Search**: Search for YouTube videos directly within the platform
-- **Transcript Analysis**: Get detailed analysis of video transcripts including:
-  - Concise summaries
-  - Key points extraction
-  - Main topics identification
-- **Sentiment Analysis**: Analyze video comments to understand:
-  - Overall sentiment (positive/negative/neutral)
-  - Key themes in comments
-  - Most discussed aspects
-- **Trend Analysis**: Get insights from video metrics:
-  - Engagement analysis
-  - Performance indicators
-  - Areas for improvement
+### Currently Available Agents
 
-## Setup
+#### 1. Calendar Agent
+- Smart calendar management
+- Meeting scheduling optimization
+- Intelligent time blocking
+- Priority-based scheduling
 
-1. Clone the repository:
-```bash
-git clone [repository-url]
-cd [repository-name]
-```
+#### 2. Gmail Agent
+- Email management and organization
+- Smart response suggestions
+- Priority inbox handling
+- Email categorization
 
-2. Install dependencies:
-```bash
-npm install
-```
+#### 3. YouTube Content Agents
 
-3. Set up environment variables in `.env.local`:
+##### YouTube Shorts Generator
+- AI-powered video generation
+- Content optimization for short-form
+- Automated editing and transitions
+- Engagement optimization
+
+##### YouTube Thumbnail Generator
+- DALL-E powered thumbnail creation
+- Click-through rate optimization
+- YouTube layout preview
+- High-quality image generation
+- Custom style preferences
+
+### Coming Soon
+- Social Media Management Agent
+- Content Research Agent
+- SEO Optimization Agent
+- Analytics Agent
+- And more...
+
+## Technical Stack
+
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- LangChain
+- Various AI Models:
+  - OpenAI GPT-4
+  - DALL-E 3
+  - Gemini Pro
+  - And more...
+
+## Setup Requirements
+
+1. Environment Variables:
 ```env
 OPENAI_API_KEY=your_openai_api_key
-GOOGLE_CLIENT_EMAIL=your_google_client_email
-GOOGLE_PRIVATE_KEY=your_google_private_key
-GOOGLE_PROJECT_ID=your_project_id
+GOOGLE_API_KEY=your_google_api_key
+# Add other required API keys
 ```
 
-4. Run the development server:
+2. Install Dependencies:
 ```bash
-npm run dev
+bun install
 ```
 
-## Usage
+3. Run Development Server:
+```bash
+bun dev
+```
 
-1. Navigate to `/youtube` in your browser
-2. Search for a YouTube video using the search bar
-3. Click "Analyze Video" on any search result
-4. View the comprehensive analysis including:
-   - Video transcript
-   - Comment analysis
-   - Engagement metrics
-   - AI-powered insights
+## Project Structure
 
-## Technical Details
+```
+├── app/
+│   ├── api/         # API routes for different agents
+│   ├── calendar/    # Calendar agent pages
+│   ├── gmail/       # Gmail agent pages
+│   └── youtube/     # YouTube agent pages
+├── components/
+│   ├── calendar/    # Calendar components
+│   ├── gmail/       # Gmail components
+│   └── youtube/     # YouTube components
+└── utils/           # Shared utilities
+```
 
-- Built with Next.js 13+ and TypeScript
-- Uses LangChain for AI processing
-- Integrates with YouTube Data API
-- GPT-3.5-turbo for content analysis
-- Handles large content through intelligent chunking
+## Security Notice
 
-## API Endpoints
+This project is private and proprietary. All code and features are confidential and should not be shared or distributed without proper authorization.
 
-### `/api/youtube/search`
-- Search for YouTube videos
-- Query params: `query` (search term)
+## Development Guidelines
 
-### `/api/youtube/video-data`
-- Get detailed video information
-- Query params: `videoId`
+1. Code Style
+   - Use TypeScript for type safety
+   - Follow ESLint configurations
+   - Maintain consistent component structure
 
-### `/api/content-analysis`
-- Analyze video content
-- POST request with:
-  ```typescript
-  {
-    type: "transcript" | "sentiment" | "trends",
-    data: {
-      transcript?: string,
-      comments?: string[],
-      metrics?: {
-        views: number,
-        likes: number,
-        commentCount: number
-      }
-    }
-  }
-  ```
+2. Component Structure
+   - Modular design
+   - Reusable components
+   - Clear separation of concerns
 
-## Contributing
+3. API Integration
+   - Secure API key handling
+   - Error handling
+   - Rate limiting consideration
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+4. Testing
+   - Unit tests for critical functions
+   - Integration testing for agents
+   - UI component testing
+
+## Performance Considerations
+
+- Optimized image handling
+- Efficient API calls
+- Caching strategies
+- Rate limit handling
+
+## Support
+
+For internal support and feature requests, please contact the development team.
+
+---
+© 2024 AI Agents Hub. All Rights Reserved. Private and Confidential.
