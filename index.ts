@@ -94,47 +94,59 @@
 
 //learning langgraph
 
-import { Annotation, StateGraph } from "@langchain/langgraph";
-import * as fs from "fs/promises";
+// import { Annotation, StateGraph } from "@langchain/langgraph";
+// import * as fs from "fs/promises";
 
-const state = Annotation.Root({
-  message: Annotation<string>(),
-  pastMessages: Annotation<string[]>({
-    default: () => [],
-    reducer: (currentValue, updatedValue) => currentValue.concat(updatedValue),
-  }),
+// const state = Annotation.Root({
+//   message: Annotation<string>(),
+//   pastMessages: Annotation<string[]>({
+//     default: () => [],
+//     reducer: (currentValue, updatedValue) => currentValue.concat(updatedValue),
+//   }),
+// });
+
+// const workflow = new StateGraph(state)
+//   .addNode("node-1", (state) => {
+//     return {
+//       message: "Hello from node-1",
+//       pastMessages: [],
+//     };
+//   })
+//   .addNode("node-2", (state) => {
+//     return {
+//       message: "Hello from node-2",
+//       pastMessages: [state.message],
+//     };
+//   })
+//   .addNode("node-3", (state) => {
+//     return {
+//       message: "Hello from node-3",
+//       pastMessages: [state.message],
+//     };
+//   })
+//   .addEdge("__start__", "node-1")
+//   .addConditionalEdges("node-1", (state) => {
+//     return state.pastMessages.length !== 1 ? "node-2" : "node-3";
+//   })
+//   .addEdge("node-3", "node-2")
+//   .addEdge("node-2", "__end__");
+
+// const graph = workflow.compile();
+
+// fs.writeFile("my-graph.png", await graph.getGraph().drawMermaid());
+
+// const res = await graph.invoke({});
+
+// console.log(res);
+
+import { DallEAPIWrapper } from "@langchain/openai";
+
+const tool = new DallEAPIWrapper({
+  n: 1, // Default
+  model: "dall-e-3", // Default
+  apiKey: process.env.OPENAI_API_KEY, // Default
 });
 
-const workflow = new StateGraph(state)
-  .addNode("node-1", (state) => {
-    return {
-      message: "Hello from node-1",
-      pastMessages: [],
-    };
-  })
-  .addNode("node-2", (state) => {
-    return {
-      message: "Hello from node-2",
-      pastMessages: [state.message],
-    };
-  })
-  .addNode("node-3", (state) => {
-    return {
-      message: "Hello from node-3",
-      pastMessages: [state.message],
-    };
-  })
-  .addEdge("__start__", "node-1")
-  .addConditionalEdges("node-1", (state) => {
-    return state.pastMessages.length !== 1 ? "node-2" : "node-3";
-  })
-  .addEdge("node-3", "node-2")
-  .addEdge("node-2", "__end__");
+const imageURL = await tool.invoke("a painting of a cat");
 
-const graph = workflow.compile();
-
-fs.writeFile("my-graph.png", await graph.getGraph().drawMermaid());
-
-const res = await graph.invoke({});
-
-console.log(res);
+console.log(imageURL);
